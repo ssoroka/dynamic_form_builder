@@ -1,0 +1,22 @@
+<li id='forms_field_<%= forms_field.id %>'>
+    <strong><%= forms_field.label %></strong>
+    [<%= forms_field.forms_field_type.name rescue content_tag('span', 'MISSING!', :style => "color:#f00;font-weight:bold") %>]
+    (Default: [<%= forms_field.default_value %>], Require: [<%= forms_field.required %>])
+    <%= link_to_remote "Edit", :url => {:action => 'update', :id => forms_field.id} %> | 
+    <%= link_to_remote "Delete", :url => {:action => 'destroy', :id => forms_field.id} %>
+    <% if forms_field.forms_field_type && %w(radio combo).include?(forms_field.forms_field_type.name) %>
+        <br/>
+        Selectable Items: <%= link_to_function "(show/hide)", 
+            (render(:update) do |page|  
+              page.toggle "selectable_#{forms_field.id}"
+            end) %>
+        <ul id="selectable_<%= forms_field.id %>" style="display:none;">
+            <% for val in forms_field.forms_fields_values do %>
+              <li><%= val.value %></li>
+            <% end %>
+            <% if forms_field.forms_fields_values.size == 0 %>
+                <li>No Items. Edit to add some</li>
+            <% end %>
+        </ul>
+    <% end %>
+</li>

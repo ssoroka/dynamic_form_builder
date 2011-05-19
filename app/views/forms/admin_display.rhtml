@@ -1,0 +1,36 @@
+<% content_for :head do %>
+  <%= tinymce_head %>
+<% end %>
+
+<h1>Form Builder</h1>
+<h2><%= @forms_module.name %></h2>
+
+<%= link_to "View submissions for this form", :action => 'view_submissions' %>
+
+<ul id="forms_module">
+  <% for forms_field in @forms_module.forms_fields do %>
+    <%= render :partial => 'forms_field', :locals => {:forms_field => forms_field} %>
+  <% end %>
+</ul>
+
+<%= link_to_remote "New Field", :url => { :action => 'new_field' }, :accesskey => 
+'N' %>
+
+<%= sortable_element 'forms_module', :url => {:action => 'do_sort' } %>
+
+<% form_for :forms_module, @forms_module, :url => { :action => 'update_form' } do |f| %>
+  <table border="0">
+    <!-- <tr><td>Allow Multiple Submissions Per Person:</td><td><%= f.check_box :allow_multi_sumbit %></td></tr> -->
+    <tr>
+      <td>Recipient E-Mail:</td>
+      <td><%= f.text_field :recipient_email %><br/>
+          Blank recipient email defaults to <%= @forms_module.company.user.email rescue "[nowhere] (set your account email address!)" %>
+      </td>
+    </tr>
+    <tr><td>Header Message: (This is shown in addition to--and below--any text on the <%= "#{Page.find_by_abstract_module_id(@forms_module.id).name} page" rescue "page this module is attached to" %>.)</td><td></td></tr>
+    <tr><td colspan="2"><%= f.text_area :header_content, :class => "tinymce", :rows => "20", :cols => "80" %></td></tr>
+    <tr><td>Footer Message (Disclaimer goes here):</td><td></td></tr><tr><td colspan="2"><%= f.text_area :footer_content, :class => "tinymce", :rows => "3", :cols => "80" %></td></tr>
+    <tr><td>Thank You Message:</td><td></td></tr><tr><td colspan="2"><%= f.text_area :thank_you_content, :class => "tinymce", :rows => "20", :cols => "80" %></td></tr>
+    <tr><td><%= submit_tag "Save Form" %></td></tr>
+  </table>
+<% end %>

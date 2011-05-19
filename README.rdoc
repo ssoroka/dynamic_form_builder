@@ -1,16 +1,8 @@
 = dynamic_form_builder
 
-Description goes here.
+Bits of code for building a form builder that builds forms that can hold responses in the db.
 
-== Contributing to dynamic_form_builder
- 
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
-* Fork the project
-* Start a feature/bugfix branch
-* Commit and push until you are happy with your contribution
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+Not really a gem. Just a bunch of files I wanted to pass on to James. You may need to fill in parts to make it work. :)
 
 == Copyright
 

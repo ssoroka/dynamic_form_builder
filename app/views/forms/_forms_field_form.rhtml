@@ -1,0 +1,29 @@
+<li id='forms_field_<%= forms_field.id || "new" %>'>
+    <% remote_form_for :forms_field, forms_field, :url => { :action => "forms_field_#{form_action}", :id => forms_field.id } do |f| %>
+        <label>Label:</label> <%= f.text_field :label %><br/>
+        <label>Field Type:</label> <%= f.select :forms_field_type_id, FormsFieldType.find(:all).map{|t| [t.name, t.id]}, { :include_blank => true } %><br/>
+        <label>Default Value:</label> <%= f.text_field :default_value %><br/>
+        <label>Required:</label> <%= f.check_box :required %><br/>
+        <label>Validation:</label> <%= f.select :forms_validation_id, FormsValidation.find_all.map{|v| [v.name, v.id]}, { :include_blank => true } %><br/>
+        <% news_display = 'inline' %>
+        <% if forms_field.nil? || forms_field.forms_field_type.nil? || !%w(text checkbox).include?(forms_field.forms_field_type.name); news_display = 'none'; end %>
+        <span id="newsletter<%= ('_' + forms_field.id.to_s) || '' %>" style="display:<%= news_display %>;">
+        <label>Newsletter:</label> <%= f.select :emc_tag_id, current_company.emc_list_tags.map {|t| [t.name, t.id]}, {:include_blank => true} %><br/>
+        </span>
+        <% choices_display = 'inline' %>
+        <% if forms_field.nil? || forms_field.forms_field_type.nil? || !%w(radio combo).include?(forms_field.forms_field_type.name); choices_display = 'none'; end %>
+        <span id="choices<%= ('_' + forms_field.id.to_s) || '' %>" style="display:<%= choices_display %>;">
+            <label>List to select from:</label> (one item per line)<br/>
+            <%= text_area_tag :field_values, forms_field.forms_fields_values.map(&:value).join("\n"), :size => "40x20" %><br/>
+        </span>
+        <% description_display = 'inline' %>
+        <% if forms_field.nil? || forms_field.forms_field_type.nil? || !forms_field.forms_field_type.name == 'description'; description_display = 'none'; end %>
+        <span id="description<%= ('_' + forms_field.id.to_s) || '' %>" style="display:<%= description_display %>;">
+            <label>Description</label><br/>
+            <%= f.text_area :description %><br/>
+        </span>
+        <%= submit_tag "Save" %>
+        <%= link_to_remote "Cancel", :url => { :action => 'forms_field_show', :id => forms_field.id } %>
+    <% end %>
+    <%= observe_field "forms_field_forms_field_type_id", :url => { :action => "check_type", :id => forms_field }, :with => "type" %>
+</li>

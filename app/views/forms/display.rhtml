@@ -1,0 +1,30 @@
+<%# @form.name %>
+<div id="form">
+  <div id="form_header_content"><%= @form.header_content %></div>
+
+  <% if @required %>
+  <div>Fields with <span style='color:red'>*</span> are required.</div>
+  <% end %>
+
+  <%= form_remote_tag :url => "/_direct/#{params[:abstract_module_id] || @page.abstract_module_id}/forms/submit", :html => {:action => "/#{@page && @page.link_name}/submit"} %>
+    <table border="0">
+      <% for form_field in @fields do %>
+        <% if form_field.forms_field_type %>
+          <% if form_field.forms_field_type.name == "spacer" %>
+          <tr><td colspan="2">&nbsp;</td></tr>
+          <% elsif form_field.forms_field_type.name == "linebreak" %>
+          <tr><td colspan="2"><hr/></td></tr>
+          <% elsif form_field.forms_field_type.name == "description" %>
+          <tr><td colspan="2"><%= content_tag('h2', form_field.label) %><%= simple_format(form_field.description) %></td></tr>
+          <% else %>
+          <tr id="field-<%= form_field.id %>"><td><label for="<%= form_field.id %>"><%= form_field.label %>&nbsp;<% if form_field.required %><span style='color:red'>*</span><% end %></label></td><td><%= form_type_tag(:field => form_field) %></td></tr>
+          <% end %>
+        <% else %>
+          <tr><td colspan="2"><%= form_field.label %></td></tr>
+        <% end %>
+      <% end %>
+      <tr><td><%= submit_tag "Submit" %></td></tr>
+    </table>
+  </form>
+  <div id="form_footer_content"><%= @form.footer_content %></div>
+</div>

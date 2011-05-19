@@ -1,0 +1,5 @@
+The following was submitted to the <%= @submitter.forms_module.company.name %> <%= @submitter.forms_module.name %> form.
+
+<% for answer in @submitter.sorted_forms_answers do %>
+    <%= answer.forms_field.label %>: <%= answer.value %>
+<% end %>

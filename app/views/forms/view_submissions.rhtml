@@ -1,0 +1,24 @@
+<h2>Submissions for "<%= @forms_module.name %>" form</h2>
+<p>
+	There are <%= @submitters.count %> submissions total.
+</p>
+<% @submitters.each{|submitter| %>
+	<div style="border:1px solid grey; margin:3px; padding:3px">
+		<p>
+			Submission Id: <%= submitter.id %><br />
+			<%= "submitted on #{submitter.created_at.to_s(:human)}<br />" if submitter.respond_to?(:created_at) && !submitter.created_at.nil? %>
+			from IP: <%= submitter.IP %>
+			<table border="1">
+				<% submitter.forms_answers.each{ |fa| %>
+					<tr>
+						<td style="font-weight:bold"><%= fa.forms_field.label rescue "[Unknown field name, form changed?]" %></td>
+						<td><%= fa.value %></td>
+					</tr>
+				<% } %>
+			</table>
+		</p>
+	</div>
+<% } %>
+<p>
+	<%= link_to "Back", :action => 'index' %>
+</p>
